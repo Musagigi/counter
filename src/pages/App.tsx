@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.scss";
-import { Outlet, Link } from "react-router-dom";
-import { Header } from "./header/Header";
+import { Link, Outlet } from "react-router-dom";
+import { Header } from "../components/header/Header";
 
 export const App = () => {
   const [count, setCount] = useState<number>(0);
@@ -12,7 +12,6 @@ export const App = () => {
   return (
     <>
       <Header />
-      <Outlet />
       <div className="counter">
         <div className="test">
           <h1>{count}</h1>
@@ -22,6 +21,8 @@ export const App = () => {
           <button onClick={dec}>--</button>
         </div>
       </div>
+      <Link to={"/detail"}>details</Link>
+      <Outlet />
     </>
   );
 };
