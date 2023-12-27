@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { InputField } from "../inputField/InputField";
 
 interface IFormInput {
   login: string;
@@ -25,6 +26,7 @@ export const Login = () => {
     <>
       <h1>войти</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField label="login" />
         <label>login</label>
         <input
           {...register("login", {
