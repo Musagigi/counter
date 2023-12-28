@@ -1,21 +1,40 @@
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { InputField } from "../inputField/InputField";
+import { Button } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface IFormInput {
   login: string;
-  email: string;
   password: string;
-  confirmPassword: string;
 }
+
+const schema = yup.object({
+  login: yup
+    .string()
+    .min(2, "минимум 2 символа")
+    .max(20, "максимум 20 символов")
+    .required("поле является обязательным"),
+  password: yup
+    .string()
+    .min(4, "минимум 4 символа")
+    .max(16, "максимум 16 символов")
+    .required("поле является обязательным"),
+});
 
 export const Login = () => {
   const {
     register,
     handleSubmit,
     reset,
-    getValues,
+    control,
     formState: { errors, isValid },
-  } = useForm<IFormInput>({ mode: "onBlur" });
+  } = useForm<IFormInput>({
+    resolver: yupResolver(schema),
+    mode: "onBlur",
+  });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
@@ -23,65 +42,37 @@ export const Login = () => {
   };
 
   return (
-    <>
-      <h1>войти</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <InputField label="login" />
-        <label>login</label>
-        <input
-          {...register("login", {
-            required: {
-              value: true,
-              message: "заполните поле",
-            },
-            maxLength: {
-              value: 15,
-              message: "максимальная длина поля 15 символов",
-            },
-          })}
-        />
-        {errors?.login && <p>{`${errors.login.message}`}</p>}
-        <input
-          {...register("email", {
-            required: {
-              value: true,
-              message: "заполните поле",
-            },
-          })}
-        />
-        {errors?.email && <p>{`${errors.email.message}`}</p>}
-        <input
-          {...register("password", {
-            required: {
-              value: true,
-              message: "заполните поле",
-            },
-            minLength: {
-              value: 8,
-              message: "Длина пароля должна быть больше 8 символов",
-            },
-          })}
-        />
-        {errors?.password && <p>{`${errors.password.message}`}</p>}
-        <input
-          {...register("confirmPassword", {
-            required: {
-              value: true,
-              message: "заполните поле",
-            },
-            validate: (value) => {
-              return value === getValues("password") || "пароль не совпадает";
-            },
-          })}
-        />
-        {errors?.confirmPassword && (
-          <p>{`${errors.confirmPassword.message}`}</p>
-        )}
-        <input
-          type="submit"
-          disabled={!isValid}
-        />
-      </form>
-    </>
+    <Box
+      onSubmit={handleSubmit(onSubmit)}
+      component="form"
+      maxWidth="sm"
+    >
+      <InputField
+        control={control}
+        label="login"
+        name="login"
+        errors={errors.login}
+        {...register("login")}
+      />
+      <InputField
+        control={control}
+        label="password"
+        name="password"
+        errors={errors.password}
+        {...register("password")}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={!isValid}
+        fullWidth
+        sx={{ mt: 4, padding: 1 }}
+      >
+        Log In
+      </Button>
+      <p>
+        не зарегистированы? <Link to={"/signup"}>зарегистрироваться</Link>
+      </p>
+    </Box>
   );
 };
