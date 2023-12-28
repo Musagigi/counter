@@ -1,28 +1,17 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { InputField } from "../inputField/InputField";
 import { Button } from "@mui/material";
 import { Box } from "@mui/material";
+import { schemaLogin } from "../../utils/yupSchema/schemas";
 
 interface IFormInput {
   login: string;
   password: string;
 }
 
-const schema = yup.object({
-  login: yup
-    .string()
-    .min(2, "минимум 2 символа")
-    .max(20, "максимум 20 символов")
-    .required("поле является обязательным"),
-  password: yup
-    .string()
-    .min(4, "минимум 4 символа")
-    .max(16, "максимум 16 символов")
-    .required("поле является обязательным"),
-});
+const schema = schemaLogin;
 
 export const Login = () => {
   const {
@@ -38,7 +27,18 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
+    const dataUser = localStorage.getItem("user");
+    const parseDataUser = JSON.parse(dataUser);
+
+    if (
+      parseDataUser.login === data.login &&
+      parseDataUser.password === data.password
+    ) {
+      localStorage.setItem("log", JSON.stringify(data));
+    }
+
     reset();
+    // redirect("/signup");
   };
 
   return (

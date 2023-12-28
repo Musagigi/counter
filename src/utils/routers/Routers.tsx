@@ -1,6 +1,6 @@
-import { App } from "../pages/App";
-import { Auth } from "../pages/auth/Auth";
-import { Detail } from "../pages/detail/Detail";
+import { App } from "../../pages/App";
+import { Auth } from "../../pages/auth/Auth";
+import { Detail } from "../../pages/detail/Detail";
 
 export const routers = () => {
   return [

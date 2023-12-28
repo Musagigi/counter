@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { routers } from "./routers/Routers";
+import { routers } from "./utils/routers/Routers";
 
 const router = createBrowserRouter(routers());
 

@@ -17,8 +17,8 @@ export const InputField: React.FC<IField> = ({
   return (
     <FormControl fullWidth>
       <Controller
-        control={control}
         name={name}
+        control={control}
         defaultValue=""
         render={({ field }) => (
           <TextField
