@@ -6,6 +6,7 @@ interface IField {
   control: any;
   name: string;
   errors: any;
+  err: string;
 }
 
 export const InputField: React.FC<IField> = ({
@@ -13,6 +14,7 @@ export const InputField: React.FC<IField> = ({
   name,
   control,
   errors,
+  err,
 }) => {
   return (
     <FormControl fullWidth>
@@ -26,8 +28,8 @@ export const InputField: React.FC<IField> = ({
             required
             variant="outlined"
             label={label}
-            error={!!errors}
-            helperText={errors ? errors?.message : ""}
+            error={!!errors[name] || !!err}
+            helperText={errors[name] ? errors[name]?.message : ""}
             sx={{ margin: "10px" }}
           />
         )}

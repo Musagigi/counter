@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField } from "../inputField/InputField";
 import { Button } from "@mui/material";
@@ -16,6 +16,8 @@ interface IFormInput {
 const schema = schemaRegister;
 
 export const SignUp = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -29,9 +31,8 @@ export const SignUp = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     localStorage.setItem("user", JSON.stringify(data));
-    // console.log(data);
-    // console.log(JSON.parse(localStorage.getItem("user")));
     reset();
+    navigate("/");
   };
 
   return (
@@ -44,28 +45,32 @@ export const SignUp = () => {
         control={control}
         label="login"
         name="login"
-        errors={errors.login}
+        err=""
+        errors={errors}
         {...register("login")}
       />
       <InputField
         control={control}
         label="email"
         name="email"
-        errors={errors.email}
+        err=""
+        errors={errors}
         {...register("email")}
       />
       <InputField
         control={control}
         label="password"
         name="password"
-        errors={errors.password}
+        err=""
+        errors={errors}
         {...register("password")}
       />
       <InputField
         control={control}
         label="confirm password"
         name="confirmPassword"
-        errors={errors.confirmPassword}
+        err=""
+        errors={errors}
         {...register("confirmPassword")}
       />
       <Button
@@ -78,7 +83,7 @@ export const SignUp = () => {
         Sign Up
       </Button>
       <p>
-        уже зарегистированы? <Link to={"/login"}>войти</Link>
+        уже есть аккаунт? <Link to={"/login"}>войти</Link>
       </p>
     </Box>
   );

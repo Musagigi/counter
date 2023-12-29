@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField } from "../inputField/InputField";
 import { Button } from "@mui/material";
@@ -14,6 +15,9 @@ interface IFormInput {
 const schema = schemaLogin;
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const [err, setErr] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -26,19 +30,24 @@ export const Login = () => {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
     const dataUser = localStorage.getItem("user");
-    const parseDataUser = JSON.parse(dataUser);
 
-    if (
-      parseDataUser.login === data.login &&
-      parseDataUser.password === data.password
-    ) {
-      localStorage.setItem("log", JSON.stringify(data));
+    if (dataUser) {
+      const parseDataUser = JSON.parse(dataUser);
+
+      if (
+        parseDataUser.login === data.login &&
+        parseDataUser.password === data.password
+      ) {
+        localStorage.setItem("log", JSON.stringify(data));
+        reset();
+        navigate("/");
+      } else {
+        setErr("неверный логин или пароль");
+      }
+    } else {
+      setErr("у вас нет аккаунта");
     }
-
-    reset();
-    // redirect("/signup");
   };
 
   return (
@@ -51,16 +60,19 @@ export const Login = () => {
         control={control}
         label="login"
         name="login"
-        errors={errors.login}
+        err={err}
+        errors={errors}
         {...register("login")}
       />
       <InputField
         control={control}
         label="password"
         name="password"
-        errors={errors.password}
+        err={err}
+        errors={errors}
         {...register("password")}
       />
+      {err && <p>{err}</p>}
       <Button
         type="submit"
         variant="contained"
@@ -71,7 +83,7 @@ export const Login = () => {
         Log In
       </Button>
       <p>
-        не зарегистированы? <Link to={"/signup"}>зарегистрироваться</Link>
+        нет аккаунта? <Link to={"/signup"}>регистрация</Link>
       </p>
     </Box>
   );
