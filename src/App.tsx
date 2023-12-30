@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Container } from "@mui/material";
-import { Header } from "../components/header/Header";
+import { Header } from "./components/header/Header";
 import "./App.scss";
 
 export const App = () => {

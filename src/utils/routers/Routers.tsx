@@ -1,4 +1,4 @@
-import { App } from "../../pages/App";
+import { App } from "../../App";
 import { Auth } from "../../pages/auth/Auth";
 import { Detail } from "../../pages/detail/Detail";
 
